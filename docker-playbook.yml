@@ -1,0 +1,20 @@
+---
+- name: Install Docker on Amazon Linux2 
+  hosts: Dockerhost
+  become: yes
+  tasks:
+    - name: Update all packages
+      shell: "yum update -y"
+    - name: Install docker-ce via amazon-linux-extras packages
+      shell: "amazon-linux-extras install docker -y"
+    - name: Start the Docker service
+      shell: "systemctl enable docker && systemctl start docker"
+    - name: Pull image from DockerHub and run a container
+      docker_container:
+        name: ngxin-container
+        image: holdennguyen6174/topic1:latest
+        state: started
+        recreate: yes
+        published_ports:
+          - 0.0.0.0:8080:8080
+...
